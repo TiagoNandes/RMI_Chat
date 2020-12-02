@@ -5,6 +5,8 @@
  */
 
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 
@@ -15,4 +17,5 @@ import java.rmi.RemoteException;
 public interface ChatServerIF extends Remote {
     void registerChatClient(ChatClientIF chatClient, String name) throws RemoteException;
     void broadcastMessage(String message, String type) throws RemoteException;
+    void sendFile(String message, String type) throws IOException;
 }

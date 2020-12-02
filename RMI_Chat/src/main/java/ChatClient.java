@@ -23,7 +23,7 @@ public class ChatClient extends UnicastRemoteObject implements ChatClientIF, Run
         chatServer.registerChatClient(this, name);
     }
     
-    public static void clearScreen() {  
+    public static void clearScreen() {
          //Clears Screen in java
         try {
             if (System.getProperty("os.name").contains("Windows"))
@@ -32,12 +32,12 @@ public class ChatClient extends UnicastRemoteObject implements ChatClientIF, Run
                 Runtime.getRuntime().exec("clear");
         } catch (IOException | InterruptedException ex) {}
      }
-    
+
     public void retrieveMessage(String message, boolean firstMessage) throws RemoteException {
         if(firstMessage == true){
             clearScreen();
         }
-        
+
         System.out.println(message);
     }
 
@@ -46,13 +46,25 @@ public class ChatClient extends UnicastRemoteObject implements ChatClientIF, Run
         String message;
         while (true) {
             message = scanner.nextLine();
-            
+
             if(message.startsWith("/")){
-                try {
-                
-                    chatServer.broadcastMessage(name + " : " + message, "private");
-                } catch (RemoteException ex) {
-                    Logger.getLogger(ChatClient.class.getName()).log(Level.SEVERE, null, ex);
+                if(message.startsWith("/file")){
+                    try {
+                        System.out.println("CHATCLIENT"+message);
+                        chatServer.sendFile(name, message);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+                else {
+                    try {
+
+                        chatServer.broadcastMessage(name + " : " + message, "private");
+                    } catch (RemoteException ex) {
+                        ex.printStackTrace();
+                        //Logger.getLogger(ChatClient.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
             } else {
                 
