@@ -18,4 +18,12 @@ public interface ChatServerIF extends Remote {
     void registerChatClient(ChatClientIF chatClient, String name) throws RemoteException;
     void broadcastMessage(String message, String type) throws RemoteException;
     void sendFile(String message, String type) throws IOException;
+    void sendFileBetweenServer(String username,String clientpath, String filename, String toRoot) throws IOException;
+    // Login
+    String login(String num1, String num2, ChatClientIF novo)
+            throws RemoteException, FileNotFoundException;
+
+    // Register
+    String register(String username, String password)
+            throws RemoteException, FileNotFoundException;
 }
