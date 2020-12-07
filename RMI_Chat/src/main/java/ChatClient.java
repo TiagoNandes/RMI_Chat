@@ -1,10 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-
 import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -45,150 +38,139 @@ public class ChatClient extends UnicastRemoteObject implements ChatClientIF, Run
      ***************************************/
     public void checkLoginState(ChatServerIF chatServer, ChatClient client, String name) throws IOException {
         boolean check = false;
+        boolean isMenuActive = true;
 
-        DataInputStream din = new
-                DataInputStream(System.in);
-        System.out.println
-                ("1 - Register");
-        System.out.println
-                ("2 - Login");
-        System.out.println
-                ("3 - Exit");
-        System.out.println();
-        System.out.print("Choice : ");
+        while (isMenuActive) {
 
-        String line = din.readLine();
-        Integer choice = new Integer(line);
+            DataInputStream din = new DataInputStream(System.in);
+            System.out.println
+                    ("1 - Register");
+            System.out.println
+                    ("2 - Login");
+            System.out.println
+                    ("0 - Exit");
+            System.out.println();
+            System.out.print("Choice : ");
 
-        int value = choice.intValue();
-        if (value == 1) {
-            boolean checkequalspass = false;
-            while (checkequalspass == false) {
-                Scanner register = new Scanner(System.in);
+            String choice = din.readLine();
+            //String choice = new Integer(line);
 
-                System.out.print("Username : ");
-                String username = register.nextLine();
+            //int value = choice.intValue();
 
-                System.out.print("Password : ");
-                String password = register.nextLine();
+            String value = choice.trim();
 
-                System.out.print("Confirm password : ");
-                String password2 = register.nextLine();
-                if (password.equals(password2)) {
-                    chatServer.register(username, password);
-                    System.out.println("Registo check");
-                    checkequalspass = true;
-                    value = 2;
+            if (value.equals("1")) {
+                boolean checkequalspass = false;
+                while (checkequalspass == false) {
+                    Scanner register = new Scanner(System.in);
+
+                    System.out.print("Username : ");
+                    String username = register.nextLine();
+
+                    System.out.print("Password : ");
+                    String password = register.nextLine();
+
+                    System.out.print("Confirm password : ");
+                    String password2 = register.nextLine();
+                    if (password.equals(password2)) {
+                        String ret = chatServer.register(username, password);
+                        System.out.println("Registo check: " + ret);
+                        checkequalspass = true;
+                        //value = "2";
+                    } else {
+                        System.out.println("The passwords do not match!");
+                        System.out.println("Try again: ");
+                        System.out.println("");
+                    }
                 }
-                //register.close();
-            }
-        }
-        if (value == 2) {
-            while (!check) {
-                Scanner scanner = new Scanner(System.in);
-                System.out.print("*********************LOGIN***************************\n");
-                System.out.print("USERNAME************************\n");
-                String name1 = scanner.next();
-                System.out.print("PASSWORD************************\n");
-                String pass = scanner.next();
-                String loginState = chatServer.login(name1, pass, client);
-                // scanner.close();
-                String success = "Sucesso!";
-
-                if (loginState.toLowerCase().trim().equals(success.toLowerCase().trim())) {
+            } else if (value.equals("2")) {
+                while (!check) {
+                    Scanner scanner = new Scanner(System.in);
+                    System.out.print("*********************LOGIN***************************\n");
+                    System.out.print("USERNAME************************\n");
+                    String name1 = scanner.next();
+                    System.out.print("PASSWORD************************\n");
+                    String pass = scanner.next();
+                    String loginState = chatServer.login(name1, pass, client);
+                    String success = "Sucesso!";
                     System.out.println(loginState);
-                    mainmenu(chatServer, name1);
-                    check = true;
+                    if (loginState.toLowerCase().trim().equals(success.toLowerCase().trim())) {
+                        mainmenu(chatServer, name1);
+                        check = true;
+                        isMenuActive = false;
+                    }
                 }
+            } else if (value.equals("0")) {
+                System.exit(0);
+            } else {
+                System.out.println("Please choose a valid option.");
             }
         }
     }
 
     public void retrieveMessage(String message, boolean firstMessage) throws RemoteException {
         if (firstMessage == true) {
-            clearScreen();
+           // clearScreen();
         }
 
         System.out.println(message);
     }
 
     public void run() {
-        Scanner scanner = new Scanner(System.in);
-        String message;
-        while (true) {
-            message = scanner.nextLine();
-
-            if (message.startsWith("/")) {
-                if (message.startsWith("/file")) {
-                    try {
-                        System.out.println("CHATCLIENT" + message);
-                        chatServer.sendFile(name, message);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-
-                } else {
-                    try {
-
-                        chatServer.broadcastMessage(name + " : " + message, "private");
-                    } catch (RemoteException ex) {
-                        ex.printStackTrace();
-                        //Logger.getLogger(ChatClient.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                }
-            } else {
-
-                try {
-
-                    chatServer.broadcastMessage(name + " : " + message, "public");
-                } catch (RemoteException ex) {
-                    Logger.getLogger(ChatClient.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
 
 
-        }
     }
 
     public void mainmenu(ChatServerIF chatServer, String name1) throws IOException {
         Scanner scanner = new Scanner(System.in);
         boolean choosen = false;
-        while (true){
-        System.out.println("1 - Send File");
-        System.out.println("2 - Send Message");
-            int choice = Integer.parseInt(scanner.nextLine());
-        if(choice == 1){
-            fileMenu(chatServer, name1);
-        }
-            if(choice == 2){
+        boolean isMenuVisible = true;
+            while (isMenuVisible){
+            System.out.println("1 - Send File");
+            System.out.println("2 - Send Message");
+            System.out.println("0 - Exit");
+            String choice = scanner.nextLine();
+            if(choice.equals("1")){
+                fileMenu(chatServer, name1);
+                isMenuVisible = false;
+            }
+            else if(choice.equals("2")){
                 System.out.println("/PERSONSNAME YOURMESSAGE ---> Send Private Message");
-                System.out.println("YOURMESSAGE ---> Send Private Message");
-                Scanner scanner1 = new Scanner(System.in);
-                String message = scanner1.nextLine();
+                System.out.println("YOURMESSAGE ---> Send Public Message");
 
-                if (message.startsWith("/")) {
+                chatServer.broadcastMessage(name1 + " has joined the chat");
+
+                boolean isChatActive = true;
+
+                while (isChatActive) {
+
+                    Scanner scanner1 = new Scanner(System.in);
+                    String message = scanner1.nextLine();
+                    isMenuVisible = false;
+
+                    if (message.startsWith("/back")) {
+                        isChatActive = false;
+                        isMenuVisible = true;
+                        chatServer.broadcastMessage(name1 + " has left the chat");
+                    } else if (message.startsWith("/")) {
                         try {
-
-                            chatServer.broadcastMessage(name1 + " : " + message, "private");
+                            chatServer.broadcastMessage(name1 + " : " + message);
                         } catch (RemoteException ex) {
                             ex.printStackTrace();
-                            //Logger.getLogger(ChatClient.class.getName()).log(Level.SEVERE, null, ex);
                         }
-                } else {
-
-                    try {
-
-                        chatServer.broadcastMessage(name1 + " : " + message, "public");
-                    } catch (RemoteException ex) {
-                        Logger.getLogger(ChatClient.class.getName()).log(Level.SEVERE, null, ex);
+                    } else {
+                        try {
+                            chatServer.broadcastMessage(name1 + " : " + message);
+                        } catch (RemoteException ex) {
+                            Logger.getLogger(ChatClient.class.getName()).log(Level.SEVERE, null, ex);
+                        }
                     }
                 }
-              //  fileMenu(chatServer);
+            } else if(choice.equals("0")){
+                System.exit(0);
+            }else{
+                System.out.println("Please choose a valid option.");
             }
-            else{
-            System.out.println("Invalid value");
-        }
-
         }
     }
     public void fileMenu(ChatServerIF chatServer, String name1) throws IOException {
@@ -207,7 +189,7 @@ public class ChatClient extends UnicastRemoteObject implements ChatClientIF, Run
         String toRoot =home+"\\Downloads\\" + fileName;
         System.out.println(toRoot);
                 //scanner.next();
-        chatServer.sendFileBetweenServer(username, fromRoot,fileName,toRoot);
+        chatServer.sendFileBetweenServer(name1, username, fromRoot,fileName,toRoot);
         mainmenu(chatServer, name1);
     }
 }
