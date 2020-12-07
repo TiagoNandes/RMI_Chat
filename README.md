@@ -19,7 +19,7 @@
 4 - rmiregistry
 ```
 
-### Driver 
+### Server 
 ```
 5 - java ChatServerDriver
 ```
