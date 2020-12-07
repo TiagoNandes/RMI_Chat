@@ -7,26 +7,26 @@
 
 ### Setup
 ```
-cd to the folder with the .java files
+1 - cd to the folder with the .java files
 ```
 ```
-rmic ChatClient
+2 - rmic ChatClient
 ```
 ```
-rmic ChatServer
+3 - rmic ChatServer
 ```
 ```
-rmiregistry
+4 - rmiregistry
 ```
 
 ### Driver 
 ```
-java ChatServerDriver
+5 - java ChatServerDriver
 ```
 
 ### Clients
 ```
-java ChatClientDriver 
+6 - java ChatClientDriver 
 ```
 
 
