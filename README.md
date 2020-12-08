@@ -29,6 +29,12 @@
 6 - java ChatClientDriver 
 ```
 
+### Useful commands
+To return to the menu:
+```
+/back 
+```
+
 
 ### Authors
 
