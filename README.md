@@ -30,6 +30,10 @@
 ```
 
 ### Useful commands
+To send a private message:
+```
+/username message...
+```
 To return to the menu:
 ```
 /back 
