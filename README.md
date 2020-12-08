@@ -1,9 +1,7 @@
 # # Chat RMI
 
 ## Information
-
-
-
+This project was developed during the first year in the Master's in Informatics Engineering for the Cloud Distributed Computing subject at ESTG. 
 
 ### Setup
 ```
