@@ -63,7 +63,7 @@ public class ChatClient extends UnicastRemoteObject implements ChatClientIF, Run
                 boolean checkequalspass = false;
                 while (checkequalspass == false) {
                     Scanner register = new Scanner(System.in);
-
+                    System.out.print("*********************REGISTO***************************\n");
                     System.out.print("Username : ");
                     String username = register.nextLine();
 
@@ -87,9 +87,9 @@ public class ChatClient extends UnicastRemoteObject implements ChatClientIF, Run
                 while (!check) {
                     Scanner scanner = new Scanner(System.in);
                     System.out.print("*********************LOGIN***************************\n");
-                    System.out.print("USERNAME************************\n");
+                    System.out.print("USERNAME: \n");
                     String name1 = scanner.next();
-                    System.out.print("PASSWORD************************\n");
+                    System.out.print("PASSWORD: \n");
                     String pass = scanner.next();
                     String loginState = chatServer.login(name1, pass, client);
                     String success = "Sucesso!";

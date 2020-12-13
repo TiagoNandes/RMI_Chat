@@ -65,6 +65,16 @@ public class ChatServer extends UnicastRemoteObject implements ChatServerIF {
 
     }
 
+    public synchronized void broadcastError(String sender, String error) throws RemoteException{
+
+        int userIndex = findUserByName(sender);
+
+        System.out.println("ENTREI NO  broadcastError: " + sender);
+
+        chatClients.get(userIndex).retrieveMessage(error, true);
+
+    }
+
 
     public  void loadMessages(String message) throws RemoteException{
 
@@ -81,6 +91,9 @@ public class ChatServer extends UnicastRemoteObject implements ChatServerIF {
         //Encontrar o index do user com o nome indicado
         int index = 0;
         int recepientIndex = -1;
+
+        System.out.println("FIND USER BY NAME NAME:::: " + name);
+
         for (String instance : names){
             if (instance.contains(name)){
                 recepientIndex = index;
@@ -320,16 +333,16 @@ public class ChatServer extends UnicastRemoteObject implements ChatServerIF {
         rest = rest.substring(restIndex + 1);
         String finalMessage = "[private] " + first + rest;
 
-        //System.out.println("message: " + message);
-        //System.out.println("recipient: " + recipient);
-        //System.out.println("first: " + first);
-        //System.out.println("rest: " + rest);
-        //System.out.println("finalMessage: " + finalMessage);
+        String sender = first.substring(first.indexOf("]") + 1, first.length() - 2);
+        sender = sender.trim();
+
+        System.out.println("UAGDI HASDB GH: " + sender);
 
         recepientIndex= findUserByName(recipient);
 
+
         if(recepientIndex == -1){
-            broadcastMessage("User " + recipient + " is offline or does not exist!");
+            broadcastError(sender, "User " + recipient + " is offline or does not exist!");
         }else{
             loadAllMesages(finalMessage, recepientIndex);
         }
