@@ -1,9 +1,7 @@
 # # Chat RMI
 
 ## Information
-
-
-
+This project was developed during the first year in the Master's in Informatics Engineering for the Cloud Distributed Computing subject at ESTG. 
 
 ### Setup
 ```
@@ -27,6 +25,16 @@
 ### Clients
 ```
 6 - java ChatClientDriver 
+```
+
+### Useful commands
+To send a private message:
+```
+/username message...
+```
+To return to the menu:
+```
+/back 
 ```
 
 
